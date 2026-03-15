@@ -69,20 +69,32 @@
             gap: 2rem;
         }
 
+        nav a {
+            transition: color 0.4s ease;
+        }
+
         nav a:hover {
             color: var(--accent-mocha);
-            transition: 0.3s;
         }
 
         .active {
-            color: var(--accent-mocha);
+            color: var(--accent-mocha) !important;
             font-weight: 700;
         }
 
         .menu-toggle {
             display: none;
-            font-size: 1.5rem;
+            flex-direction: column;
+            gap: 5px;
             cursor: pointer;
+            padding: 5px;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background-color: var(--bg-beige);
+            transition: 0.3s;
         }
 
         .page-header {
@@ -111,34 +123,28 @@
 
         .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 50px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
         }
 
         .product-card {
             background: var(--white);
-            border: none;
             border-radius: 12px;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
-        }
-
-        .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            transition: transform 0.4s ease;
         }
 
         .product-image-container {
             width: 100%;
-            height: 450px;
+            aspect-ratio: 4 / 5; 
             overflow: hidden;
             position: relative;
+            background-color: #f9f9f9;
         }
 
-        /* Carousel Styles */
         .carousel-container {
             display: flex;
             width: 100%;
@@ -146,11 +152,19 @@
             transition: transform 0.5s ease-in-out;
         }
 
-        .carousel-container img {
+        .carousel-container img, .product-image {
             flex: 0 0 100%;
             width: 100%;
             height: 100%;
             object-fit: cover;
+            object-position: center;
+            transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Hover Zoom Effect */
+        .product-card:hover .product-image,
+        .product-card:hover .carousel-container img {
+            transform: scale(1.08);
         }
 
         .carousel-btn {
@@ -165,55 +179,29 @@
             border-radius: 50%;
             cursor: pointer;
             z-index: 10;
-            transition: background 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-        }
-
-        .carousel-btn:hover {
-            background: var(--accent-mocha);
-        }
-
-        .prev-btn { left: 15px; }
-        .next-btn { right: 15px; }
-
-        .product-image {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.8s ease;
-        }
-
-        .product-card:hover .product-image {
-            transform: scale(1.08);
         }
 
         .product-info {
-            padding: 2.5rem;
+            padding: 2rem;
             text-align: center;
-            flex-grow: 1;
         }
 
         .product-title {
-            font-size: 1.4rem;
-            margin-bottom: 1rem;
-            letter-spacing: 1.5px;
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
             text-transform: uppercase;
-            color: var(--text-black);
+            letter-spacing: 1px;
         }
 
         .product-desc {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             color: #57534E;
-            line-height: 1.7;
         }
 
         .reveal {
             opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            transform: translateY(30px);
+            transition: all 0.8s ease-out;
         }
 
         .reveal.active {
@@ -230,37 +218,38 @@
             background-color: var(--whatsapp-green);
             color: #FFF;
             border-radius: 50px;
-            text-align: center;
-            box-shadow: 2px 2px 15px rgba(0,0,0,0.2);
-            z-index: 1000;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: transform 0.3s ease;
-        }
-
-        .whatsapp-float:hover {
-            transform: scale(1.1);
-        }
-
-        .whatsapp-icon {
-            width: 35px;
-            height: 35px;
+            z-index: 1000;
         }
 
         footer {
             background-color: var(--text-black);
             color: var(--bg-beige);
-            padding: 4rem 5%;
+            padding: 3rem 5%;
             text-align: center;
         }
 
         @media (max-width: 768px) {
-            .page-header h1 { font-size: 2.5rem; }
-            nav ul { display: none; }
-            .menu-toggle { display: block; }
-            .product-image-container { height: 350px; }
-            .whatsapp-float { bottom: 20px; right: 20px; width: 50px; height: 50px; }
+            header { padding: 1rem 3%; }
+            .menu-toggle { display: flex; }
+            nav ul {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--text-black);
+                padding: 2rem;
+                z-index: 100;
+            }
+            nav ul.show { display: flex; }
+
+            .page-header { padding: 3rem 5% 2rem; }
+            .page-header h1 { font-size: 2.2rem; }
+            .product-image-container { aspect-ratio: 3 / 4; } 
         }
     </style>
 </head>
@@ -268,9 +257,13 @@
 
     <header>
         <div class="logo">Core & Craft</div>
-        <div class="menu-toggle">☰</div>
+        <div class="menu-toggle" id="mobile-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
         <nav>
-            <ul>
+            <ul id="nav-menu">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="collection.html" class="active">Collection</a></li>
                 <li><a href="custom.html">Custom Studio</a></li>
@@ -293,14 +286,14 @@
                 </div>
                 <div class="product-info">
                     <h2 class="product-title">The Linear Glass Table</h2>
-                    <p class="product-desc">A striking iron-frame table featuring a unique tiered design and tempered glass surfaces. Its clean, geometric lines bring a touch of modern elegance to any room.</p>
+                    <p class="product-desc">A striking iron-frame table with tempered glass surfaces and clean geometric lines.</p>
                 </div>
             </div>
 
             <div class="product-card reveal">
                 <div class="product-image-container">
-                    <button class="carousel-btn prev-btn" onclick="moveSlide(this, -1)">&#10094;</button>
-                    <button class="carousel-btn next-btn" onclick="moveSlide(this, 1)">&#10095;</button>
+                    <button class="carousel-btn" style="left:10px;" onclick="moveSlide(this, -1)">&#10094;</button>
+                    <button class="carousel-btn" style="right:10px;" onclick="moveSlide(this, 1)">&#10095;</button>
                     <div class="carousel-container">
                         <img src="images/couch1.jpg" alt="Angle 1">
                         <img src="images/couch2.jpg" alt="Angle 2">
@@ -308,8 +301,8 @@
                     </div>
                 </div>
                 <div class="product-info">
-                    <h2 class="product-title">Convertible Iron Sofa-bed</h2>
-                    <p class="product-desc">Iron frame sofa with a sliding extension that converts into a comfortable bed.</p>
+                    <h2 class="product-title">Convertible Sofa-bed</h2>
+                    <p class="product-desc">Industrial iron frame sofa that slides into a comfortable bed.</p>
                 </div>
             </div>
 
@@ -319,54 +312,54 @@
                 </div>
                 <div class="product-info">
                     <h2 class="product-title">Floating iron shelf</h2>
-                    <p class="product-desc">Minimal iron frame shelves designed for a modern floating wall display.</p>
+                    <p class="product-desc">Minimalist wall-mounted iron display for modern interiors.</p>
                 </div>
             </div>
 
             <div class="product-card reveal">
                 <div class="product-image-container">
-                    <button class="carousel-btn prev-btn" onclick="moveSlide(this, -1)">&#10094;</button>
-                    <button class="carousel-btn next-btn" onclick="moveSlide(this, 1)">&#10095;</button>
+                    <button class="carousel-btn" style="left:10px;" onclick="moveSlide(this, -1)">&#10094;</button>
+                    <button class="carousel-btn" style="right:10px;" onclick="moveSlide(this, 1)">&#10095;</button>
                     <div class="carousel-container">
-                        <img src="images/high-chair1.jpg" alt="Primary View">
-                        <img src="images/high-chair2.jpg" alt="Secondary View">
-                        <img src="images/high-chair3.jpg" alt="Texture Detail">
+                        <img src="images/high-chair1.jpg" alt="View 1">
+                        <img src="images/high-chair2.jpg" alt="View 2">
+                        <img src="images/high-chair3.jpg" alt="View 3">
                     </div>
                 </div>
                 <div class="product-info">
-                    <h2 class="product-title">high bar chair</h2>
-                    <p class="product-desc">Premium industrial craftsmanship. Swipe to explore the unique finish and versatile design of this custom piece.</p>
+                    <h2 class="product-title">High Bar Chair</h2>
+                    <p class="product-desc">Premium industrial finish with versatile custom design.</p>
                 </div>
             </div>
 
             <div class="product-card reveal">
                 <div class="product-image-container">
-                    <img src="images/S-shape.jpg" alt="Product Name" class="product-image">
+                    <img src="images/S-shape.jpg" alt="S-shape table" class="product-image">
                 </div>
                 <div class="product-info">
-                    <h2 class="product-title">S-shape Iron Side Table</h2>
-                    <p class="product-desc">Minimal iron side table with a unique S-shaped frame and glass top.</p>
+                    <h2 class="product-title">S-shape Side Table</h2>
+                    <p class="product-desc">Unique S-shaped frame with a glass top.</p>
                 </div>
             </div>
 
             <div class="product-card reveal">
                 <div class="product-image-container">
-                   <button class="carousel-btn prev-btn" onclick="moveSlide(this, -1)">&#10094;</button>
-                    <button class="carousel-btn next-btn" onclick="moveSlide(this, 1)">&#10095;</button>
+                    <button class="carousel-btn" style="left:10px;" onclick="moveSlide(this, -1)">&#10094;</button>
+                    <button class="carousel-btn" style="right:10px;" onclick="moveSlide(this, 1)">&#10095;</button>
                     <div class="carousel-container">
-				<img src="images/G-shape1.jpg" alt="Full View">
-                        <img src="images/G-shape2.jpg" alt="Shelf Detail">
-				</div>
+                        <img src="images/G-shape1.jpg" alt="View 1">
+                        <img src="images/G-shape2.jpg" alt="View 2">
+                    </div>
                 </div>
                 <div class="product-info">
-                    <h2 class="product-title">G shape Table</h2>
-                    <p class="product-desc">Layered iron coffee table with a sleek glass top design.</p>
+                    <h2 class="product-title">G Shape Table</h2>
+                    <p class="product-desc">Layered iron coffee table with sleek glass detailing.</p>
                 </div>
             </div>
 
             <div class="product-card reveal">
                 <div class="product-image-container">
-                    <img src="images/red-dining.jpg" alt="Product Name" class="product-image">
+                    <img src="images/red-dining.jpg" alt="Iron Dining Set" class="product-image">
                 </div>
                 <div class="product-info">
                     <h2 class="product-title">Iron Dining Set</h2>
@@ -376,17 +369,17 @@
 
             <div class="product-card reveal">
                 <div class="product-image-container">
-                    <img src="images/small-corner.jpg" alt="Product Name" class="product-image">
+                    <img src="images/small-corner.jpg" alt="The Conversation Set" class="product-image">
                 </div>
                 <div class="product-info">
                     <h2 class="product-title">The Conversation Set</h2>
-                    <p class="product-desc">A five piece set designed for small space living.Sleek stone-finish tabletop with 4 tuck-away iron frame chairs.</p>
+                    <p class="product-desc">A five piece set designed for small space living. Sleek stone-finish tabletop with 4 tuck-away iron frame chairs.</p>
                 </div>
             </div>
 
             <div class="product-card reveal">
                 <div class="product-image-container">
-                    <img src="images/bookshelf.jpg" alt="Product Name" class="product-image">
+                    <img src="images/bookshelf.jpg" alt="Geometric Bookshelf" class="product-image">
                 </div>
                 <div class="product-info">
                     <h2 class="product-title">Geometric Bookshelf</h2>
@@ -398,7 +391,7 @@
     </main>
 
     <a href="https://wa.me/917357340222" class="whatsapp-float" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="whatsapp-icon">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width:35px;">
     </a>
 
     <footer>
@@ -416,28 +409,19 @@
             container.setAttribute('data-index', currentIndex);
         }
 
-        const menuToggle = document.querySelector('.menu-toggle');
-        const navLinks = document.querySelector('nav ul');
-        menuToggle.addEventListener('click', () => {
-            if (navLinks.style.display === 'flex') {
-                navLinks.style.display = 'none';
-            } else {
-                navLinks.style.cssText = "display:flex; flex-direction:column; position:absolute; top:60px; left:0; width:100%; background:var(--text-black); padding:1rem; z-index:100;";
-            }
+        const mobileToggle = document.getElementById('mobile-toggle');
+        const navMenu = document.getElementById('nav-menu');
+        mobileToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('show');
         });
 
-        const observerOptions = { threshold: 0.1 };
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
+                if (entry.isIntersecting) entry.target.classList.add('active');
             });
-        }, observerOptions);
+        }, { threshold: 0.1 });
 
-        document.querySelectorAll('.reveal').forEach(el => {
-            observer.observe(el);
-        });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     </script>
 </body>
 </html>
