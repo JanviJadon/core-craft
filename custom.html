@@ -46,7 +46,7 @@
             color: inherit;
         }
 
-        /* 1. Sticky Header */
+        /* SYNCED HEADER: Matching Index/Collection style */
         header {
             background-color: var(--text-black);
             color: var(--bg-beige);
@@ -72,20 +72,33 @@
             gap: 2rem;
         }
 
+        nav a {
+            transition: color 0.4s ease;
+        }
+
         nav a:hover {
             color: var(--accent-mocha);
-            transition: 0.3s;
         }
 
         .active {
-            color: var(--accent-mocha);
+            color: var(--accent-mocha) !important;
             font-weight: 700;
         }
 
+        /* FIXED TOGGLE: Using the same span bars for consistency */
         .menu-toggle {
             display: none;
-            font-size: 1.5rem;
+            flex-direction: column;
+            gap: 5px;
             cursor: pointer;
+            padding: 5px;
+        }
+
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background-color: var(--bg-beige);
+            transition: 0.3s;
         }
 
         /* Hero Section */
@@ -108,7 +121,7 @@
             font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 0.35em;
-            color: #A67C52;
+            color: var(--accent-mocha);
             font-weight: bold;
             margin-bottom: 1rem;
             display: block;
@@ -126,7 +139,6 @@
             margin-bottom: 2.5rem;
         }
 
-        /* Checkbox List Styling */
         .flow-list {
             display: flex;
             flex-direction: column;
@@ -149,7 +161,7 @@
         }
 
         .check-icon {
-            color: #A67C52;
+            color: var(--accent-mocha);
             font-weight: bold;
         }
 
@@ -166,7 +178,7 @@
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
 
-        /* 2. Customization Blocks with Enhanced Shadows */
+        /* Customization Blocks */
         .blocks-section {
             padding: 5rem 5%;
             max-width: 1400px;
@@ -209,7 +221,7 @@
             border-bottom: 1px solid #F5F5F5;
         }
 
-        /* 3. Color Options Interactive Polish */
+        /* Color Options */
         .colors-section {
             padding: 5rem 5%;
             max-width: 1400px;
@@ -256,7 +268,7 @@
             border: 1px solid rgba(0,0,0,0.1);
         }
 
-        /* 4. Scroll Reveal Classes */
+        /* Scroll Reveal */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
@@ -278,12 +290,10 @@
             background-color: var(--whatsapp-green);
             color: #FFF;
             border-radius: 50px;
-            text-align: center;
-            box-shadow: 2px 2px 15px rgba(0,0,0,0.2);
-            z-index: 1000;
             display: flex;
             align-items: center;
             justify-content: center;
+            z-index: 1000;
             transition: transform 0.3s ease;
         }
 
@@ -291,25 +301,42 @@
             transform: scale(1.1);
         }
 
-        .whatsapp-icon {
-            width: 35px;
-            height: 35px;
-        }
-
-        /* Footer */
         footer {
             background-color: var(--text-black);
             color: var(--bg-beige);
-            padding: 3rem 5%;
+            padding: 4rem 5%;
             text-align: center;
         }
 
-        /* Responsive */
+        /* MOBILE OPTIMIZATION */
         @media (max-width: 768px) {
-            nav ul { display: none; }
-            .menu-toggle { display: block; }
+            header { padding: 1rem 3%; } /* Icon pushed right */
+            .menu-toggle { display: flex; }
+            
+            nav ul {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background-color: var(--text-black);
+                padding: 2rem;
+                text-align: center;
+                gap: 1.5rem;
+                z-index: 100;
+            }
+
+            nav ul.show { display: flex; }
+
             .hero-title { font-size: 2.2rem; }
             .hero-image img { height: 350px; }
+            
+            /* Stacking studio blocks for effortless scrolling */
+            .blocks-grid {
+                grid-template-columns: 1fr;
+            }
+
             .whatsapp-float { bottom: 20px; right: 20px; width: 50px; height: 50px; }
         }
     </style>
@@ -318,9 +345,13 @@
 
     <header>
         <div class="logo">Core & Craft</div>
-        <div class="menu-toggle">☰</div>
+        <div class="menu-toggle" id="mobile-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
         <nav>
-            <ul>
+            <ul id="nav-menu">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="collection.html">Collection</a></li> 
                 <li><a href="custom.html" class="active">Custom Studio</a></li> 
@@ -358,7 +389,7 @@
 
     <section class="blocks-section">
         <div class="blocks-grid">
-            <div class="block-card">
+            <div class="block-card reveal">
                 <h2 class="block-title">Industrial Finishes</h2>
                 <ul class="block-list">
                     <li>• Matte Raven Black</li>
@@ -367,7 +398,7 @@
                     <li>• Deep Mocha Walnut</li>
                 </ul>
             </div>
-            <div class="block-card">
+            <div class="block-card reveal">
                 <h2 class="block-title">Premium Upholstery</h2>
                 <ul class="block-list">
                     <li>• Top-Grain Italian Leather</li>
@@ -376,7 +407,7 @@
                     <li>• Performance Hybrid Blends</li>
                 </ul>
             </div>
-            <div class="block-card">
+            <div class="block-card reveal">
                 <h2 class="block-title">Made to Measure</h2>
                 <ul class="block-list">
                     <li>• Bed Frame Extensions</li>
@@ -388,7 +419,7 @@
         </div>
     </section>
 
-    <section class="colors-section">
+    <section class="colors-section reveal">
         <h2 class="colors-title">Studio Color Palette</h2>
         <div class="colors-grid">
             <div class="color-option">
@@ -418,8 +449,8 @@
         </div>
     </section>
 
-    <a href="https://wa.me/1234567890" class="whatsapp-float" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" class="whatsapp-icon">
+    <a href="https://wa.me/917357340222" class="whatsapp-float" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp" style="width:35px;">
     </a>
 
     <footer>
@@ -427,29 +458,22 @@
     </footer>
 
     <script>
-        // Mobile Menu Toggle Logic
-        const menuToggle = document.querySelector('.menu-toggle');
-        const navLinks = document.querySelector('nav ul');
-        menuToggle.addEventListener('click', () => {
-            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-            if(navLinks.style.display === 'flex') {
-                navLinks.style.cssText = "display:flex; flex-direction:column; position:absolute; top:60px; left:0; width:100%; background:var(--text-black); padding:1rem; z-index:100;";
-            }
+        // SYNCED MOBILE LOGIC
+        const mobileToggle = document.getElementById('mobile-toggle');
+        const navMenu = document.getElementById('nav-menu');
+
+        mobileToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('show');
         });
 
-        // Intersection Observer for Scroll Reveal
-        const observerOptions = { threshold: 0.1 };
+        // REVEAL OBSERVER
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                }
+                if (entry.isIntersecting) entry.target.classList.add('active');
             });
-        }, observerOptions);
+        }, { threshold: 0.1 });
 
-        // Target sections for reveal
-        document.querySelectorAll('section, .hero-section').forEach(el => {
-            el.classList.add('reveal');
+        document.querySelectorAll('.reveal, .hero-section').forEach(el => {
             observer.observe(el);
         });
     </script>
